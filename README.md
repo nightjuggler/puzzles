@@ -33,10 +33,12 @@ series ends when the specified sequence of heads and tails first
 occurs. The number of flips are counted and the average over a
 specified number of runs (by default 10,000) is displayed.
 
-```python
-$ ./flipcoins.py
+```
+> ./flipcoins.py ht
+Expected number of flips to get 'HT' = 4
+> ./flipcoins.py
 Expected number of flips to get 'HH' = 6
-$ ./flipcoins.py -v
+> ./flipcoins.py -v
 E[HH] = 0
 2E[H] = 2 + E[HT] + E[HH]
 E[HT] = E[]
@@ -48,11 +50,11 @@ E[] = 2 + E[H]
 2E[] = 4 + 2E[H]
 E[] = 6
 Expected number of flips to get 'HH' = 6
-$ ./flipcoins.py hth
+> ./flipcoins.py hth
 Expected number of flips to get 'HTH' = 10
-$ ./flipcoins.py -a 100000 hth
+> ./flipcoins.py -a 100000 hth
 Average number of flips to get 'HTH' = 10.00345
-$
+>
 ```
 
 ### twonumbers.py
@@ -60,11 +62,12 @@ $
 This Python script solves the following puzzle:
 
 Two integers between 2 and 100 (inclusive) are chosen.
+
 P is given their product, and S is given their sum.
 
-P says: "I can't figure out what the two numbers are."
-S replies: "Yeah, I already knew that."
-P replies: "Oh, really, well now I know what the two numbers are."
+P says: "I can't figure out what the two numbers are."<br>
+S replies: "Yeah, I already knew that."<br>
+P replies: "Oh, really, well now I know what the two numbers are."<br>
 S replies: "Oh, really, well now I do too."
 
 What are the two numbers?
