@@ -2,10 +2,10 @@
 
 N = 8
 
-rows         = [0 for i in xrange(N)]
-columns      = [False for i in xrange(N)]
-diagonals1   = [False for i in xrange(2*N - 1)]
-diagonals2   = [False for i in xrange(2*N - 1)]
+rows         = [0] * N
+columns      = [False] * N
+diagonals1   = [False] * (2*N - 1)
+diagonals2   = [False] * (2*N - 1)
 numSolutions = 0
 
 def printBoard():
