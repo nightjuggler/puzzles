@@ -20,13 +20,14 @@ type State struct {
 	channel    chan<- Rows
 }
 
-const ColEmpty = "0"
-const ColQueen = "1"
+const ColEmpty = "_"
+const ColQueen = "Q"
+const ColSep = "|"
 
-var columns []interface{}
+var columns []string
 
 func init() {
-	columns = make([]interface{}, N)
+	columns = make([]string, N)
 	for i := range columns {
 		columns[i] = ColEmpty
 	}
@@ -35,7 +36,7 @@ func init() {
 func printBoard(rows *Rows) {
 	for _, queenCol := range rows {
 		columns[queenCol] = ColQueen
-		fmt.Println(columns...)
+		fmt.Println(strings.Join(columns, ColSep))
 		columns[queenCol] = ColEmpty
 	}
 	fmt.Println()
