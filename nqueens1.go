@@ -16,8 +16,8 @@ func printBoard() {
 	numSolutions++
 	fmt.Printf("==== Solution #%d ====\n\n", numSolutions)
 
-	for _, queenCol := range rows {
-		for col := range columns {
+	for _, queenCol := range &rows {
+		for col := range &columns {
 			if col == queenCol {
 				fmt.Print(" 1")
 			} else {
@@ -33,7 +33,7 @@ func doRow(row int) {
 	d1 := row
 	d2 := row + N - 1
 
-	for col, colHasQueen := range columns {
+	for col, colHasQueen := range &columns {
 		if !(colHasQueen || diagonals1[d1] || diagonals2[d2]) {
 			rows[row] = col
 			columns[col] = true

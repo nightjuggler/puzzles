@@ -48,7 +48,7 @@ func doRow(row int, state *State) {
 	d1 := row
 	d2 := row + N - 1
 
-	for col, colHasQueen := range state.columns {
+	for col, colHasQueen := range &state.columns {
 		if !(colHasQueen || state.diagonals1[d1] || state.diagonals2[d2]) {
 			state.rows[row] = col
 			state.columns[col] = true
