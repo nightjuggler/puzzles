@@ -20,13 +20,23 @@ type State struct {
 	channel    chan<- Rows
 }
 
-var columns [N]int
+const ColEmpty = "0"
+const ColQueen = "1"
+
+var columns []interface{}
+
+func init() {
+	columns = make([]interface{}, N)
+	for i := range columns {
+		columns[i] = ColEmpty
+	}
+}
 
 func printBoard(rows *Rows) {
 	for _, queenCol := range rows {
-		columns[queenCol] = 1
-		fmt.Println(fmt.Sprint(columns)[1 : 2*N])
-		columns[queenCol] = 0
+		columns[queenCol] = ColQueen
+		fmt.Println(columns...)
+		columns[queenCol] = ColEmpty
 	}
 	fmt.Println()
 }
