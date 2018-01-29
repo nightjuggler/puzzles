@@ -85,9 +85,7 @@ func doRow0(col int, channel chan<- Rows) {
 }
 
 func (rows *Rows) Rotate() *Rows {
-	var rowsCopy Rows
-	copy(rowsCopy[:], rows[:])
-	for row, col := range rowsCopy {
+	for row, col := range *rows {
 		rows[col] = N - 1 - row
 	}
 	return rows
