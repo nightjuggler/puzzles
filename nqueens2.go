@@ -42,19 +42,6 @@ func printBoard(rows *Rows) {
 	fmt.Println()
 }
 
-func printBoardFromKey(key string) {
-	var rows Rows
-	for i, colStr := range strings.Split(key, ",") {
-		col, err := strconv.Atoi(colStr)
-		if err != nil {
-			fmt.Printf("Failed to print board from key %q: %v\n", key, err)
-			return
-		}
-		rows[i] = col
-	}
-	printBoard(&rows)
-}
-
 func doRow(row int, state *State) {
 	d1 := row
 	d2 := row + N - 1
@@ -117,23 +104,35 @@ func (rows *Rows) Key() string {
 	return strings.Join(colStr[:], ",")
 }
 
-func (rows *Rows) FirstKey() string {
-	keys := []string{
-		rows.Key(),
-		rows.Mirror().Key(),
-		rows.Mirror().Rotate().Key(),
-		rows.Mirror().Key(),
-		rows.Mirror().Rotate().Key(),
-		rows.Mirror().Key(),
-		rows.Mirror().Rotate().Key(),
-		rows.Mirror().Key(),
+func (rows1 *Rows) Less(rows2 *Rows) bool {
+	for i := range rows1 {
+		col1, col2 := rows1[i], rows2[i]
+		if col1 < col2 {
+			return true
+		} else if col1 > col2 {
+			return false
+		}
 	}
-	sort.Strings(keys)
+	return false
+}
+
+func (rows *Rows) FirstKey() Rows {
+	keys := make([]Rows, 8)
+	keys[0] = *rows
+	keys[1] = *rows.Mirror()
+	keys[2] = *rows.Mirror().Rotate()
+	keys[3] = *rows.Mirror()
+	keys[4] = *rows.Mirror().Rotate()
+	keys[5] = *rows.Mirror()
+	keys[6] = *rows.Mirror().Rotate()
+	keys[7] = *rows.Mirror()
+
+	sort.Slice(keys, func(i, j int) bool { return keys[i].Less(&keys[j]) })
 	return keys[0]
 }
 
 func main() {
-	solutions := make(map[string]int)
+	solutions := make(map[Rows]int)
 
 	numChildren := N
 	rowsChannel := make(chan Rows, numChildren)
@@ -161,7 +160,7 @@ loop:
 	numSolutions := 0
 	numFundamental := len(solutions)
 
-	keys := make([]string, numFundamental)
+	keys := make([]Rows, numFundamental)
 	i := 0
 	for key, num := range solutions {
 		numSolutions += num
@@ -169,11 +168,12 @@ loop:
 		i++
 	}
 
-	sort.Strings(keys)
+	sort.Slice(keys, func(i, j int) bool { return keys[i].Less(&keys[j]) })
 
-	for i, key := range keys {
-		fmt.Printf("==== Fundamental Solution %d (%s) (%d variations) ====\n\n", i+1, key, solutions[key])
-		printBoardFromKey(key)
+	for i, rows := range keys {
+		fmt.Printf("==== Fundamental Solution %d (%s) (%d variations) ====\n\n",
+			i+1, rows.Key(), solutions[rows])
+		printBoard(&rows)
 	}
 	fmt.Printf("There are %d fundamental solutions (%d total)\n", numFundamental, numSolutions)
 }
