@@ -117,18 +117,29 @@ func (rows1 *Rows) Less(rows2 *Rows) bool {
 }
 
 func (rows *Rows) FirstKey() Rows {
-	keys := make([]Rows, 8)
-	keys[0] = *rows
-	keys[1] = *rows.Mirror()
-	keys[2] = *rows.Mirror().Rotate()
-	keys[3] = *rows.Mirror()
-	keys[4] = *rows.Mirror().Rotate()
-	keys[5] = *rows.Mirror()
-	keys[6] = *rows.Mirror().Rotate()
-	keys[7] = *rows.Mirror()
-
-	sort.Slice(keys, func(i, j int) bool { return keys[i].Less(&keys[j]) })
-	return keys[0]
+	firstkey := *rows
+	if rows.Mirror().Less(&firstkey) {
+		firstkey = *rows
+	}
+	if rows.Mirror().Rotate().Less(&firstkey) {
+		firstkey = *rows
+	}
+	if rows.Mirror().Less(&firstkey) {
+		firstkey = *rows
+	}
+	if rows.Mirror().Rotate().Less(&firstkey) {
+		firstkey = *rows
+	}
+	if rows.Mirror().Less(&firstkey) {
+		firstkey = *rows
+	}
+	if rows.Mirror().Rotate().Less(&firstkey) {
+		firstkey = *rows
+	}
+	if rows.Mirror().Less(&firstkey) {
+		firstkey = *rows
+	}
+	return firstkey
 }
 
 func main() {
