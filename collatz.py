@@ -117,7 +117,7 @@ def three_x_plus_one_groups(groups):
 				groups[0] += 1
 		else:
 			groups[j] -= 1
-			groups[j+1:j+1] = [0, 1]
+			groups[i:i] = [0, 1]
 			i += 2
 		if groups[i] == 0:
 			groups[i - 1] += groups[i + 1]
@@ -129,7 +129,7 @@ def collatz_groups(n):
 	printn_groups(groups)
 	i = 0
 
-	while len(groups) > 1 or groups[0] > 1:
+	while groups != [1]:
 		three_x_plus_one_groups(groups)
 		printn_groups(groups)
 		i += 1
