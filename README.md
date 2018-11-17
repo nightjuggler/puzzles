@@ -76,6 +76,7 @@ What are the two numbers?
 
 Toward the end of his 23rd annual Christmas lecture (December 7, 2017),
 [Don Knuth presents a conjecture](https://www.youtube.com/watch?v=BxQw4CdxLr8&t=55m45s),
-sent to him by Bill Gosper. This is the HTML/MathML for the letter I
+sent to him by Bill Gosper. [This](https://nightjuggler.com/proof/20180304-KnuthLetter.html)
+is the HTML/MathML for the letter I
 [mailed](https://www-cs-faculty.stanford.edu/~knuth/email.html) to Professor Knuth
 on March 4, 2018 with a proof for the conjecture. I never received a reply.
