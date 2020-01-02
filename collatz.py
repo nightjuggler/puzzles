@@ -136,6 +136,78 @@ def collatz_groups(n):
 
 	print "{} steps".format(i)
 
+def groups2runs(groups):
+	runs = groups[:]
+
+	i = len(runs) - 2
+	while i >= 0:
+		if runs[i + 1] != 0:
+			runs[i] -= 1
+		i -= 1
+
+	return runs
+
+def runs2groups(runs):
+	groups = runs[:]
+
+	n = len(groups)
+	i = 1
+	while i < n:
+		if groups[i] != 0:
+			groups[i - 1] += 1
+		i += 1
+
+	return groups
+
+def divide_by_two_runs(runs):
+	if len(runs) & 1 != 0:
+		return 0
+
+	i = len(runs) - 1
+	num_zeros = runs.pop(i)
+	assert num_zeros != 0
+
+	add = True
+	while i > 0:
+		i -= 1
+		if add:
+			runs[i] += 1
+			if runs[i] != 1:
+				break
+			add = False
+		else:
+			runs[i] -= 1
+			if runs[i] != 0:
+				break
+			add = True
+
+	return num_zeros
+
+def printn_runs(runs):
+	i = divide_by_two_runs(runs)
+	z = "" if i == 0 else "0"*i if i <= 4 else "0*" + str(i)
+	s = ungroupify(runs2groups(runs))
+	n = int(s, base=2)
+
+	print "{:>32} {:4} {:9} {:>20} {:>30}".format(s, z, n, int2str(n), ",".join(map(str, runs)))
+
+def three_x_plus_one_runs(runs):
+	groups = runs2groups(runs)
+	three_x_plus_one_groups(groups)
+	runs[:] = groups2runs(groups)
+
+def collatz_runs(n):
+	runs = groups2runs(groupify(n))
+	printn_runs(runs)
+	i = 0
+
+	while runs != [1]:
+		three_x_plus_one_runs(runs)
+		printn_runs(runs)
+		i += 1
+
+	print "{} steps".format(i)
+
 def main():
 	import argparse
 
@@ -144,6 +216,7 @@ def main():
 	parser.add_argument("base", nargs="?", default=0, type=int)
 	parser.add_argument("-b", "--binary-string", action="store_true")
 	parser.add_argument("-g", "--binary-groups", action="store_true")
+	parser.add_argument("-r", "--binary-runs", action="store_true")
 	args = parser.parse_args()
 
 	n = int(args.number, base=args.base)
@@ -153,6 +226,8 @@ def main():
 		collatz_groups(n)
 	elif args.binary_string:
 		collatz_binstr(n)
+	elif args.binary_runs:
+		collatz_runs(n)
 	else:
 		collatz(n)
 
