@@ -23,13 +23,11 @@ td {
 }
 .m {
 	background-color: rgb(240,240,240);
-	padding: 4px;
-}
-.mf {
-	font-family: times new roman;
-	font-size: 14pt;
+	padding: 4px 6px;
 }
 </style>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
 </head>
 <body>
 
@@ -42,14 +40,14 @@ Dear Prof. Knuth,<br><br>
 Toward the end of your most recent Christmas lecture, you presented the following conjecture,<br>
 sent to you by Bill Gosper, which you showed to be true to at least 1000 decimal digits:<br>
 
-<div class="m"><math><mstyle mathvariant="normal" displaystyle="true">
+<div class="m"><math displaystyle="true" mathsize="1.4em">
 <msup>
 	<mn>2</mn>
 	<mfrac><mn>2</mn><mn>5</mn></mfrac>
 </msup>
-<mspace width=".2em" />
+<mo>&InvisibleTimes;</mo>
 <msqrt><mn>5</mn></msqrt>
-<mspace width=".2em" />
+<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
 <mfrac>
 	<msup>
 		<mrow>
@@ -70,7 +68,7 @@ sent to you by Bill Gosper, which you showed to be true to at least 1000 decimal
 			</mrow>
 			<mn>2</mn>
 		</msup>
-		<mspace width=".2em" />
+		<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
 		<msup>
 			<mrow>
 				<mi>&Gamma;</mi>
@@ -83,13 +81,13 @@ sent to you by Bill Gosper, which you showed to be true to at least 1000 decimal
 	</mrow>
 </mfrac>
 <mo>=</mo>
-<mn>&phi;</mn>
+<mpadded voffset="0.2em"><mi>&phi;</mi></mpadded>
 <mo>=</mo>
 <mfrac>
 	<mrow><mn>1</mn><mo>+</mo><msqrt><mn>5</mn></msqrt></mrow>
 	<mn>2</mn>
 </mfrac>
-</mstyle></math></div>
+</math></div>
 
 <br>Here's a proof which makes use of the following three prior results:<br><br>
 
@@ -100,16 +98,16 @@ sent to you by Bill Gosper, which you showed to be true to at least 1000 decimal
 <td>(a)</td>
 <td>Euler's reflection formula for the gamma function (for non-integer z):
 
-<div class="m"><math><mstyle mathvariant="normal" displaystyle="true">
+<div class="m"><math displaystyle="true" mathsize="1.4em">
 <mrow><mi>&Gamma;</mi><mo>(</mo><mi>z</mi><mo>)</mo></mrow>
-<mspace width=".1em" />
+<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
 <mrow><mi>&Gamma;</mi><mo>(</mo><mn>1</mn><mo>-</mo><mi>z</mi><mo>)</mo></mrow>
 <mo>=</mo>
 <mfrac>
-	<mn>&pi;</mn>
-	<mrow><mi>sin</mi><mo>(</mo><mn>&pi;</mn><mspace width=".1em" /><mi>z</mi><mo>)</mo></mrow>
+	<mpadded voffset="-0.2em"><mi>&pi;</mi></mpadded>
+	<mrow><mi>sin</mi><mo>(</mo><mi>&pi;</mi><mo>&InvisibleTimes;</mo><mi>z</mi><mo>)</mo></mrow>
 </mfrac>
-</mstyle></math></div>
+</math></div>
 
 </td>
 </tr>
@@ -118,17 +116,17 @@ sent to you by Bill Gosper, which you showed to be true to at least 1000 decimal
 <td>(b)</td>
 <td>The Legendre duplication formula for the gamma function:
 
-<div class="m"><math><mstyle mathvariant="normal" displaystyle="true">
+<div class="m"><math displaystyle="true" mathsize="1.4em">
 <mrow><mi>&Gamma;</mi><mo>(</mo><mi>z</mi><mo>)</mo></mrow>
-<mspace width=".1em" />
+<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
 <mrow><mi>&Gamma;</mi><mo>(</mo><mi>z</mi><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow>
 <mo>=</mo>
-<msup><mn>2</mn><mrow><mn>1</mn><mo>-</mo><mn>2</mn><mspace width=".1em" /><mi>z</mi></mrow></msup>
-<mspace width=".2em" />
-<msqrt>&pi;</msqrt>
-<mspace width=".2em" />
-<mrow><mi>&Gamma;</mi><mo>(</mo><mn>2</mn><mspace width=".1em" /><mi>z</mi><mo>)</mo></mrow>
-</mstyle></math></div>
+<msup><mn>2</mn><mrow><mn>1</mn><mo>-</mo><mn>2</mn><mo>&InvisibleTimes;</mo><mi>z</mi></mrow></msup>
+<mo>&InvisibleTimes;</mo>
+<msqrt><mi>&pi;</mi></msqrt>
+<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
+<mrow><mi>&Gamma;</mi><mo>(</mo><mn>2</mn><mo>&InvisibleTimes;</mo><mi>z</mi><mo>)</mo></mrow>
+</math></div>
 
 </td>
 </tr>
@@ -140,13 +138,13 @@ that uses the Chebyshev polynomial of the first kind
 (see <a href="http://mathworld.wolfram.com/TrigonometryAnglesPi5.html">http://mathworld.wolfram.com<br>/TrigonometryAnglesPi5.html</a> which uses equation 18
 from <a href="http://mathworld.wolfram.com/Multiple-AngleFormulas.html">http://mathworld.wolfram.com<br>/Multiple-AngleFormulas.html</a>):
 
-<div class="m"><math><mstyle mathvariant="normal" displaystyle="true">
+<div class="m"><math displaystyle="true" mathsize="1.4em">
 <mi>sin</mi>
-<mrow><mo>(</mo><mfrac><mn>&pi;</mn><mn>5</mn></mfrac><mo>)</mo></mrow>
+<mrow><mo>(</mo><mfrac><mi>&pi;</mi><mn>5</mn></mfrac><mo>)</mo></mrow>
 <mo>=</mo>
 <mfrac><mn>1</mn><mn>4</mn></mfrac>
 <msqrt><mn>10</mn><mo>-</mo><mn>2</mn><msqrt><mn>5</mn></msqrt></msqrt>
-</mstyle></math></div>
+</math></div>
 
 </td>
 </tr>
@@ -159,21 +157,21 @@ from <a href="http://mathworld.wolfram.com/Multiple-AngleFormulas.html">http://m
 <td>(1)</td>
 <td>Applying (a) (for z=1/5) followed by (c), we get
 
-<div class="m"><math><mstyle mathvariant="normal" displaystyle="true">
+<div class="m"><math displaystyle="true" mathsize="1.4em">
 <mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mo>)</mo></mrow>
-<mspace width=".2em" />
+<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
 <mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>4</mn><mn>5</mn></mfrac><mo>)</mo></mrow>
 <mo>=</mo>
 <mfrac>
-	<mn>&pi;</mn>
-	<mrow><mi>sin</mi><mo>(</mo><mfrac><mn>&pi;</mn><mn>5</mn></mfrac><mo>)</mo></mrow>
+	<mi>&pi;</mi>
+	<mrow><mi>sin</mi><mo>(</mo><mfrac><mi>&pi;</mi><mn>5</mn></mfrac><mo>)</mo></mrow>
 </mfrac>
 <mo>=</mo>
 <mfrac>
-	<mrow><mn>4</mn><mn>&pi;</mn></mrow>
+	<mrow><mn>4</mn><mi>&pi;</mi></mrow>
 	<msqrt><mn>10</mn><mo>-</mo><mn>2</mn><msqrt><mn>5</mn></msqrt></msqrt>
 </mfrac>
-</mstyle></math></div>
+</math></div>
 
 </td>
 </tr>
@@ -182,52 +180,52 @@ from <a href="http://mathworld.wolfram.com/Multiple-AngleFormulas.html">http://m
 <td>(2)</td>
 <td>Applying (b) for z=3/10 and z=1/10, we get
 
-<div class="m"><math><mstyle mathvariant="normal" displaystyle="true">
+<div class="m"><math displaystyle="true" mathsize="1.4em">
 <mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>3</mn><mn>10</mn></mfrac><mo>)</mo></mrow>
-<mspace width=".2em" />
+<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
 <mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>8</mn><mn>10</mn></mfrac><mo>)</mo></mrow>
 <mo>=</mo>
 <msup><mn>2</mn><mfrac><mn>2</mn><mn>5</mn></mfrac></msup>
-<mspace width=".2em" />
-<msqrt>&pi;</msqrt>
-<mspace width=".2em" />
+<mo>&InvisibleTimes;</mo>
+<msqrt><mi>&pi;</mi></msqrt>
+<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
 <mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>6</mn><mn>10</mn></mfrac><mo>)</mo></mrow>
-</mstyle></math></div>
+</math></div>
 
 and
 
-<div class="m"><math><mstyle mathvariant="normal" displaystyle="true">
+<div class="m"><math displaystyle="true" mathsize="1.4em">
 <mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>1</mn><mn>10</mn></mfrac><mo>)</mo></mrow>
-<mspace width=".2em" />
+<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
 <mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>6</mn><mn>10</mn></mfrac><mo>)</mo></mrow>
 <mo>=</mo>
 <msup><mn>2</mn><mfrac><mn>4</mn><mn>5</mn></mfrac></msup>
-<mspace width=".2em" />
-<msqrt>&pi;</msqrt>
-<mspace width=".2em" />
+<mo>&InvisibleTimes;</mo>
+<msqrt><mi>&pi;</mi></msqrt>
+<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
 <mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>2</mn><mn>10</mn></mfrac><mo>)</mo></mrow>
-</mstyle></math></div>
+</math></div>
 
 Therefore:
 
-<div class="m"><math><mstyle mathvariant="normal" displaystyle="true">
+<div class="m"><math displaystyle="true" mathsize="1.4em">
 <mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>8</mn><mn>10</mn></mfrac><mo>)</mo></mrow>
 <mo>=</mo>
 <mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>4</mn><mn>5</mn></mfrac><mo>)</mo></mrow>
 <mo>=</mo>
 <msup><mn>2</mn><mfrac><mn>6</mn><mn>5</mn></mfrac></msup>
-<mspace width=".2em" />
-<mn>&pi;</mn>
-<mspace width=".2em" />
+<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
+<mi>&pi;</mi>
+<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
 <mfrac>
 <mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mo>)</mo></mrow>
 <mrow>
 	<mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>1</mn><mn>10</mn></mfrac><mo>)</mo></mrow>
-	<mspace width=".2em" />
+	<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
 	<mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>3</mn><mn>10</mn></mfrac><mo>)</mo></mrow>
 </mrow>
 </mfrac>
-</mstyle></math></div>
+</math></div>
 
 </td>
 </tr>
@@ -236,11 +234,11 @@ Therefore:
 <td>(3)</td>
 <td>Substituting the result from step 2 into step 1, we get
 
-<div class="m"><math><mstyle mathvariant="normal" displaystyle="true">
+<div class="m"><math displaystyle="true" mathsize="1.4em">
 <msup><mn>2</mn><mfrac><mn>6</mn><mn>5</mn></mfrac></msup>
-<mspace width=".2em" />
-<mn>&pi;</mn>
-<mspace width=".2em" />
+<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
+<mi>&pi;</mi>
+<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
 <mfrac>
 	<msup>
 		<mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mo>)</mo></mrow>
@@ -248,25 +246,25 @@ Therefore:
 	</msup>
 	<mrow>
 		<mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>1</mn><mn>10</mn></mfrac><mo>)</mo></mrow>
-		<mspace width=".2em" />
+		<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
 		<mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>3</mn><mn>10</mn></mfrac><mo>)</mo></mrow>
 	</mrow>
 </mfrac>
 <mo>=</mo>
 <mfrac>
-	<mrow><mn>4</mn><mn>&pi;</mn></mrow>
+	<mrow><mn>4</mn><mi>&pi;</mi></mrow>
 	<msqrt><mn>10</mn><mo>-</mo><mn>2</mn><msqrt><mn>5</mn></msqrt></msqrt>
 </mfrac>
-</mstyle></math></div>
+</math></div>
 
 </td>
 </tr>
 
 <tr>
 <td>(4)</td>
-<td>Dividing both sides by <span class="mf">&pi;</span> and squaring both sides, we get
+<td>Dividing both sides by <math mathsize="1.4em"><mi>&pi;</mi></math> and squaring both sides, we get
 
-<div class="m"><math><mstyle mathvariant="normal" displaystyle="true">
+<div class="m"><math displaystyle="true" mathsize="1.4em">
 <msup>
 	<mn>2</mn>
 	<mfrac>
@@ -274,6 +272,7 @@ Therefore:
 		<mn>5</mn>
 	</mfrac>
 </msup>
+<mo>&InvisibleTimes;</mo>
 <mfrac>
 	<msup>
 		<mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mo>)</mo></mrow>
@@ -284,7 +283,7 @@ Therefore:
 			<mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>1</mn><mn>10</mn></mfrac><mo>)</mo></mrow>
 			<mn>2</mn>
 		</msup>
-		<mspace width=".2em" />
+		<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
 		<msup>
 			<mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>3</mn><mn>10</mn></mfrac><mo>)</mo></mrow>
 			<mn>2</mn>
@@ -301,7 +300,7 @@ Therefore:
 	<mn>8</mn>
 	<mrow><mn>5</mn><mo>-</mo><msqrt><mn>5</mn></msqrt></mrow>
 </mfrac>
-</mstyle></math></div>
+</math></div>
 
 </td>
 </tr>
@@ -310,7 +309,7 @@ Therefore:
 <td>(5)</td>
 <td>After multiplying both sides by <math><msqrt><mn>5</mn></msqrt></math> and simplifying, we're done:
 
-<div class="m"><math><mstyle mathvariant="normal" displaystyle="true">
+<div class="m"><math displaystyle="true" mathsize="1.4em">
 <msup>
 	<mn>2</mn>
 	<mfrac>
@@ -318,7 +317,9 @@ Therefore:
 		<mn>5</mn>
 	</mfrac>
 </msup>
+<mo>&InvisibleTimes;</mo>
 <msqrt><mn>5</mn></msqrt>
+<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
 <mfrac>
 	<msup>
 		<mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mo>)</mo></mrow>
@@ -329,7 +330,7 @@ Therefore:
 			<mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>1</mn><mn>10</mn></mfrac><mo>)</mo></mrow>
 			<mn>2</mn>
 		</msup>
-		<mspace width=".2em" />
+		<mo lspace="0.1em" rspace="0.1em">&InvisibleTimes;</mo>
 		<msup>
 			<mrow><mi>&Gamma;</mi><mo>(</mo><mfrac><mn>3</mn><mn>10</mn></mfrac><mo>)</mo></mrow>
 			<mn>2</mn>
@@ -359,7 +360,7 @@ Therefore:
 	<mrow><msqrt><mn>5</mn></msqrt><mo>+</mo><mn>1</mn></mrow>
 	<mn>2</mn>
 </mfrac>
-</mstyle></math></div>
+</math></div>
 
 </td>
 </tr>
