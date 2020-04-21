@@ -1,0 +1,312 @@
+<html>
+<head>
+<title>Game of Life</title>
+<style type="text/css">
+p {
+	font-family: verdana;
+	font-size: 10pt;
+}
+body {
+	background-color: #ffffff;
+}
+table {
+	border-collapse: collapse;
+	border: 1px solid #000000;
+}
+td {
+	width: 10px;
+	height: 10px;
+	border: 1px solid #dddddd;
+}
+a {text-decoration: none;}
+</style>
+<script type="text/javascript" language="javascript">
+// November 4, 2005 -- Pius Fischer
+// Tested on Windows 2000 in IE 6.0 and Firefox 1.5 (March 21, 2006)
+
+// Global Constants
+var gridWidth = 50;
+var gridHeight = 50;
+
+// Global Variables
+var timerId = 0;
+var oldShift = 0;
+var dragging = false;
+var generation = 0;
+var population = 0;
+var minPop = 0;
+var maxPop = 0;
+var generationText;
+var populationText;
+var startPopText;
+var minPopText;
+var maxPopText;
+var popPanel;
+var gridArray;
+var tbodyNode;
+
+function showPopPanel()
+{
+	if (popPanel.style.display == 'none')
+	{
+		minPop = population;
+		maxPop = population;
+		startPopText.nodeValue = population;
+		minPopText.nodeValue = minPop;
+		maxPopText.nodeValue = maxPop;
+		popPanel.style.display = 'inline';
+	}
+}
+function hidePopPanel()
+{
+	generation = 0;
+	generationText.nodeValue = generation;
+	popPanel.style.display = 'none';
+}
+function fillGrid(fill)
+{
+	for (var i = 0; i < gridHeight; ++i)
+		for (var j = 0; j < gridWidth; ++j)
+		{
+			var node = tbodyNode.childNodes[i].childNodes[j];
+			if (fill) {
+				node.style.backgroundColor = '#000000';
+				gridArray[i + 1][j + 1] = 1 << oldShift;
+			} else {
+				node.style.backgroundColor = '#ffffff';
+				gridArray[i + 1][j + 1] = 0;
+			}
+		}
+	population = fill ? gridHeight * gridWidth : 0;
+	populationText.nodeValue = population;
+	hidePopPanel();
+}
+function setPopulation()
+{
+	populationText.nodeValue = population;
+	if (population < minPop) {
+		minPop = population;
+		minPopText.nodeValue = minPop;
+	} else if (population > maxPop) {
+		maxPop = population;
+		maxPopText.nodeValue = maxPop;
+	}
+}
+function playGame()
+{
+	var noChange = true;
+	var newShift = ~oldShift & 1;
+
+	for (var i = 0; i < gridHeight; ++i)
+		for (var j = 0; j < gridWidth; ++j)
+		{
+			var node = tbodyNode.childNodes[i].childNodes[j];
+			var y = i + 1;
+			var x = j + 1;
+			var neighborCount =
+				((gridArray[y - 1][x - 1] >> oldShift) & 1) +
+				((gridArray[y - 1][x] >> oldShift) & 1) +
+				((gridArray[y - 1][x + 1] >> oldShift) & 1) +
+				((gridArray[y][x - 1] >> oldShift) & 1) +
+				((gridArray[y][x + 1] >> oldShift) & 1) +
+				((gridArray[y + 1][x - 1] >> oldShift) & 1) +
+				((gridArray[y + 1][x] >> oldShift) & 1) +
+				((gridArray[y + 1][x + 1] >> oldShift) & 1);
+
+			var oldValue = (gridArray[y][x] >> oldShift) & 1;
+			var newValue =
+				(neighborCount < 2 || neighborCount > 3) ? 0 :
+				(neighborCount == 3) ? 1 : oldValue;
+			gridArray[y][x] =
+				(oldValue << oldShift) +
+				(newValue << newShift);
+			if (newValue != oldValue)
+			{
+				noChange = false;
+				if (newValue == 0) {
+					--population;
+					node.style.backgroundColor = '#ffffff';
+				} else {
+					++population;
+					node.style.backgroundColor = '#000000';
+				}
+			}
+		}
+	oldShift = newShift;
+	if (noChange && timerId != 0)
+		startButton(document.getElementById('startButton'));
+	generationText.nodeValue = ++generation;
+	setPopulation();
+}
+function startButton(buttonNode)
+{
+	var buttonPanel = document.getElementById('buttonPanel');
+	if (buttonNode.value == 'START')
+	{
+		buttonNode.value = 'STOP';
+		buttonPanel.style.display = 'none';
+		showPopPanel();
+		tbodyNode.style.cursor = 'default';
+		playGame();
+		timerId = setInterval(playGame, 100);
+	}
+	else
+	{
+		buttonNode.value = 'START';
+		buttonPanel.style.display = 'inline';
+		clearInterval(timerId);
+		timerId = 0;
+		tbodyNode.style.cursor = 'pointer';
+	}
+}
+function stepButton(buttonNode)
+{
+	showPopPanel();
+	playGame();
+}
+function handleClick(event)
+{
+	var node = window.event ? window.event.srcElement : event.target;
+
+	var y = Number(node.id.substr(2, 2)) + 1;
+	var x = Number(node.id.substr(4, 2)) + 1;
+
+	var oldValue = (gridArray[y][x] >> oldShift) & 1;
+	var newValue = ~oldValue & 1;
+	gridArray[y][x] = newValue << oldShift;
+
+	if (newValue == 0) {
+		--population;
+		node.style.backgroundColor = '#ffffff';
+	} else {
+		++population;
+		node.style.backgroundColor = '#000000';
+	}
+	populationText.nodeValue = population;
+}
+function handleMouseDown(event)
+{
+	if (timerId == 0)
+	{
+		hidePopPanel();
+		dragging = true;
+		handleClick(event);
+	}
+	return false;
+}
+function handleMouseUp(event)
+{
+	dragging = false;
+	return false;
+}
+function handleMouseOver(event)
+{
+	if (dragging)
+		handleClick(event);
+	return false;
+}
+function handleDragStart()
+{
+	return false;
+}
+function initGridArray()
+{
+	var ylen = gridHeight + 2;
+	var xlen = gridWidth + 2;
+
+	gridArray = new Array(ylen);
+	for (var y = 0; y < ylen; ++y)
+	{
+		gridArray[y] = new Array(xlen);
+		for (var x = 0; x < xlen; ++x)
+			gridArray[y][x] = 0;
+	}
+}
+function init()
+{
+	initGridArray();
+	var gridContainer = document.getElementById('gridContainer');
+
+	generationText = document.getElementById('generation').firstChild;
+	populationText = document.getElementById('population').firstChild;
+	startPopText = document.getElementById('startPop').firstChild;
+	minPopText = document.getElementById('minPop').firstChild;
+	maxPopText = document.getElementById('maxPop').firstChild;
+	popPanel = document.getElementById('popPanel');
+	hidePopPanel();
+
+	tbodyNode = document.createElement('tbody');
+	tbodyNode.style.cursor = 'pointer';
+
+	for (var i = 0; i < gridHeight; ++i)
+	{
+		var trNode = document.createElement('tr');
+		for (var j = 0; j < gridWidth; ++j)
+		{
+			var tdNode = document.createElement('td');
+			tdNode.style.backgroundColor = '#ffffff';
+			tdNode.id = 'td'
+				+ (i < 10 ? '0' + i : i)
+				+ (j < 10 ? '0' + j : j);
+			trNode.appendChild(tdNode);
+		}
+		tbodyNode.appendChild(trNode);
+	}
+
+	tbodyNode.onmousedown = handleMouseDown;
+	tbodyNode.onmouseup = handleMouseUp;
+	tbodyNode.onmouseover = handleMouseOver;
+	tbodyNode.ondragstart = handleDragStart;
+	tbodyNode.onselectstart = handleDragStart;
+
+	var tableNode = document.createElement('table');
+	tableNode.cellPadding = 0;
+	tableNode.cellSpacing = 0;
+	tableNode.appendChild(tbodyNode);
+
+	gridContainer.appendChild(tableNode);
+}
+</script>
+</head>
+<body onload="init()">
+
+<p><b><a href="/">Home</a>
+| <a href="/puzzles.html">Puzzles</a>
+| <a href="/blockparty/">BlockParty</a>
+| <a href="/xw/">Crosswords</a>
+| <a href="/dominotile.html">DominoTile</a>
+| <a href="/fortunes.html">Fortunes</a>
+| GameOfLife
+| <a href="/sudoku/">Sudoku</a></b></p>
+
+<p>This is a JavaScript implementation
+(<a href="life.txt">view source</a>) of
+<a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway's
+Game of Life</a>. Click on the squares in the
+grid below to specify the initial state.</p>
+
+<div id="gridContainer"></div>
+
+<p>
+<input type="button" value="START" id="startButton"
+	onclick="startButton(this)">
+<span id="buttonPanel">
+<input type="button" value="STEP" id="stepButton"
+	onclick="stepButton(this)">
+<input type="button" value="CLEAR" id="clearButton"
+	onclick="fillGrid(false)">
+<input type="button" value="FILL" id="fillButton"
+	onclick="fillGrid(true)">
+</span>
+</p>
+
+<p><tt>
+Generation: <span id="generation">0</span><br>
+Population: <span id="population">0</span>
+<span id="popPanel">(start: <span id="startPop">0</span>
+| min: <span id="minPop">0</span>
+| max: <span id="maxPop">0</span>)</span>
+</tt></p>
+
+</body>
+</html>
