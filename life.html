@@ -40,7 +40,7 @@ td {
 /*
 	** A JavaScript Implementation of Conway's Game of Life ** by Pius Fischer
 	Version 1 - November 4, 2005
-	Version 2 - April 22, 2020
+	Version 2 - April 22-25, 2020
 */
 (function() {
 'use strict';
@@ -78,47 +78,57 @@ function hidePopPanel()
 	generationText.nodeValue = generation = 0;
 	popPanel.style.display = 'none';
 }
-function fillGrid()
+function fillGrid(state, color)
 {
-	const fill = this.value === 'FILL';
-	const state = fill ? 1 : 0;
-	const color = fill ? 'black' : 'white';
-	let k = gridWidth + 2;
+	let k = 0;
 	for (const tr of tbodyNode.childNodes)
-	{
 		for (const td of tr.childNodes)
 		{
 			td.style.backgroundColor = color;
-			oldState[k += 1] = state;
+			oldState[k++] = state;
 		}
-		k += 2;
-	}
-	populationText.nodeValue = population = fill ? gridHeight * gridWidth : 0;
+	populationText.nodeValue = population = k * state;
 	hidePopPanel();
 	return true;
 }
 function playGame()
 {
 	let noChange = true;
-	const w = gridWidth + 2;
+	const w = gridWidth;
+	const h = gridHeight;
+	const xMax = w - 1;
+	const yMax = h - 1;
+	let a = w * yMax; // previous row
+	let b = 0;        // current row
+	let c = w;        // next row
 
-	for (let k = w, i = 0; i < gridHeight; i += 1, k += 2)
-		for (let j = 0; j < gridWidth; j += 1)
+	for (let y = 0; y < h; y += 1, a = b, b = c, c += w)
+	{
+		if (y === yMax) c = 0;
+
+		let a1 = a + xMax, a2 = a, a3 = a + 1;
+		let b1 = b + xMax, b2 = b, b3 = b + 1;
+		let c1 = c + xMax, c2 = c, c3 = c + 1;
+
+		for (let x = 0; x < w; x += 1,
+			a1 = a2, a2 = a3, a3 += 1,
+			b1 = b2, b2 = b3, b3 += 1,
+			c1 = c2, c2 = c3, c3 += 1)
 		{
-			const oldValue = oldState[k += 1];
-			const a = k - w;
-			const b = k + w;
-			const neighborCount =
-				oldState[a - 1] + oldState[a] + oldState[a + 1] +
-				oldState[k - 1] +               oldState[k + 1] +
-				oldState[b - 1] + oldState[b] + oldState[b + 1];
+			if (x === xMax) { a3 = a; b3 = b; c3 = c; }
 
+			const neighborCount =
+				oldState[a1] + oldState[a2] + oldState[a3] +
+				oldState[b1] +                oldState[b3] +
+				oldState[c1] + oldState[c2] + oldState[c3];
+
+			const oldValue = oldState[b2];
 			const newValue = neighborCount === 2 ? oldValue : neighborCount === 3 ? 1 : 0;
-			newState[k] = newValue;
+			newState[b2] = newValue;
 
 			if (newValue !== oldValue)
 			{
-				const node = tbodyNode.childNodes[i].childNodes[j];
+				const node = tbodyNode.childNodes[y].childNodes[x];
 				if (newValue === 0) {
 					--population;
 					node.style.backgroundColor = 'white';
@@ -129,6 +139,7 @@ function playGame()
 				noChange = false;
 			}
 		}
+	}
 
 	const tmpState = oldState;
 	oldState = newState;
@@ -224,7 +235,7 @@ function preventDefault(event)
 }
 function init()
 {
-	const arrayLen = (gridHeight + 2) * (gridWidth + 2);
+	const arrayLen = gridHeight * gridWidth;
 	oldState = new Uint8Array(arrayLen);
 	newState = new Uint8Array(arrayLen);
 
@@ -239,14 +250,14 @@ function init()
 	tbodyNode = document.createElement('tbody');
 	tbodyNode.style.cursor = 'pointer';
 
-	for (let k = gridWidth + 2, i = gridHeight; i !== 0; i -= 1, k += 2)
+	for (let k = 0, i = gridHeight; i !== 0; i -= 1)
 	{
 		const tr = document.createElement('tr');
-		for (let j = gridWidth; j !== 0; j -= 1)
+		for (let j = gridWidth; j !== 0; j -= 1, k += 1)
 		{
 			const td = document.createElement('td');
 			td.style.backgroundColor = 'white';
-			td.id = 'td' + (k += 1);
+			td.id = 'td' + k;
 			tr.appendChild(td);
 		}
 		tbodyNode.appendChild(tr);
@@ -262,8 +273,8 @@ function init()
 	document.getElementById('gridContainer').appendChild(table);
 	document.getElementById('startButton').addEventListener('click', startStop);
 	document.getElementById('stepButton').addEventListener('click', playOnce);
-	document.getElementById('clearButton').addEventListener('click', fillGrid);
-	document.getElementById('fillButton').addEventListener('click', fillGrid);
+	document.getElementById('clearButton').addEventListener('click', () => fillGrid(0, 'white'));
+	document.getElementById('fillButton').addEventListener('click', () => fillGrid(1, 'black'));
 }
 window.addEventListener('DOMContentLoaded', init);
 })();
